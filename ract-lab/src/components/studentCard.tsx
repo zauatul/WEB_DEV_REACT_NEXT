@@ -10,10 +10,17 @@ type Student = {
     courses:any
 }
 
+type StudentCard = {
+    student: Student,
+    isFavorite:boolean,
+    onToggleFavorite:(id:number) => void;
+
+}
 
 
-function StudentCard(props : {student: Student}) {
-    const {name, id, avatar, gpa, major, courses} = props.student;
+
+function StudentCard({student, isFavorite, onToggleFavorite} : StudentCard) {
+    const {name, id, avatar, gpa, major, courses} = student;
 
 
   return (
@@ -21,6 +28,7 @@ function StudentCard(props : {student: Student}) {
         <div>
             <p>Name: {name}</p>
             <p>Id: {id}</p>
+            <button onClick={()=> onToggleFavorite(id)}>{isFavorite ? "❤️" : "🤍"}</button>
             <p>Avatar: {avatar}</p>
             <p>GPA: {gpa}</p>
             <p>Major: {major}</p>
