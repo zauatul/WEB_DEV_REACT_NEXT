@@ -1,45 +1,73 @@
-import React from 'react'
-import CourseTag from './courseTag'
+import CourseTag from "./courseTag";
 
-type Student = {
-    name:string,
-    id:number,
-    avatar:string,
-    gpa:number,
-    major:string,
-    courses:any
-}
-
-type StudentCard = {
-    student: Student,
-    isFavorite:boolean,
-    onToggleFavorite:(id:number) => void;
-
-}
+import {
+    useStudents,
+    type Student
+} from "../context/StudentContext";
 
 
+type StudentCardProps = {
+    student: Student;
+};
 
-function StudentCard({student, isFavorite, onToggleFavorite} : StudentCard) {
-    const {name, id, avatar, gpa, major, courses} = student;
+
+function StudentCard({ student }: StudentCardProps) {
+
+    const { favoriteIds, toggleFavorite, removeStudent } = useStudents();
+    const { name, id, avatar, gpa, major, courses } = student;
+
+    const isFavorite = favoriteIds.includes(id);
+
+    return (
+        <div className="student-card">
+            <img src={avatar} alt={name} width="100" />
+
+            <p>Name: {name} </p>
 
 
-  return (
-    <>
-        <div>
-            <p>Name: {name}</p>
-            <p>Id: {id}</p>
-            <button onClick={()=> onToggleFavorite(id)}>{isFavorite ? "❤️" : "🤍"}</button>
-            <p>Avatar: {avatar}</p>
-            <p>GPA: {gpa}</p>
-            <p>Major: {major}</p>
+            <p> ID: {id}  </p>
 
-            <h4>Enrolled Courses</h4>
-            {
-                courses && courses.map((cr:any) => <CourseTag course={cr} />)
-            }
+
+            <p> GPA: {gpa} </p>
+
+
+            <p> Major: {major} </p>
+
+
+            <button onClick={() => toggleFavorite(id) } >
+                {isFavorite
+                    ? "❤️"
+                    : "🤍"
+                }
+
+            </button>
+
+
+            <button onClick={() => removeStudent(id) } className="remove-button">
+                Remove Student
+            </button>
+
+            <h4>
+                Enrolled Courses
+            </h4>
+
+            <div>
+
+                {courses.map((course) => (
+
+                    <CourseTag
+                        key={course.courseName}
+                        course={course}
+                    />
+                ))}
+
+            </div>
+
         </div>
-    </>
-  )
+
+    );
+
 }
+
 
 export default StudentCard;

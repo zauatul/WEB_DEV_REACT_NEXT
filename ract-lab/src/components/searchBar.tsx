@@ -1,16 +1,19 @@
+import { useStudents } from "../context/StudentContext";
 
-type Bar = {
-    query: string,
-    onSearchChnage: (value: string) => void
-}
-function SearchBar(props : {search : Bar}) {
-    const {query, onSearchChnage} = props.search;
-  return (
-    <div>
-        <input type="text" placeholder="search by name or major...." value={query} 
-                onChange={(e) => onSearchChnage(e.target.value)}></input>
-    </div>
-  )
+
+function SearchBar() {
+
+    const {
+        query,
+        setQuery
+    } = useStudents();
+
+    return (
+        <div>
+            <input type="text" placeholder="Search by name or major..." value={query} onChange={(e) => setQuery(e.target.value) }/>
+        </div>
+    );
+
 }
 
-export default SearchBar
+export default SearchBar;
